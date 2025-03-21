@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"></html>
 
 <head>
     <meta charset="utf-8">
@@ -19,7 +19,7 @@
     <meta name="twitter:description" content="Large Multimodal Models (LMMs) have made significant strides in visual question-answering for single images. Recent advancements like long-context LMMs have allowed them to ingest larger, or even multiple, images. However, the ability to process a large number of visual tokens does not guarantee effective retrieval and reasoning for multi-image question answering (MIQA), especially in real-world applications like photo album searches or satellite imagery analysis. In this work, we first assess the limitations of current benchmarks for long-context LMMs. We address these limitations by introducing a new vision-centric, long-context benchmark, Visual Haystacks (VHs). We comprehensively evaluate both open-source and proprietary models on VHs, and demonstrate that these models struggle when reasoning across potentially unrelated images, perform poorly on cross-image reasoning, as well as exhibit biases based on the placement of key information within the context window. Towards a solution, we introduce MIRAGE (Multi-Image Retrieval Augmented Generation), an open-source, lightweight visual-RAG framework that processes up to 10k images on a single 40G A100 GPU -- far surpassing the 1k-image limit of contemporary models. MIRAGE demonstrates up to 13% performance improvement over existing open-source LMMs on VHs, sets a new state-of-the-art on the RetVQA multi-image QA benchmark, and achieves competitive performance on single-image QA with state-of-the-art LMMs." />
     <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X600-->
     <meta name="twitter:image" content="static/images/REVERSE_logo.png">
-    <meta name="twitter:card" content="REVERSE Project Logo: A cartoon character photo sitting on top of a haystack of images.">
+    <meta name="twitter:card" content="REVERSE Project Logo: A cartoon llava character holding a tool to fix hallucination.">
     <!-- Keywords for your paper to be indexed by-->
     <meta name="keywords"
         content="Large Multimodal Models, Long-context Reasoning, VQA, Image Retrieval">
@@ -28,9 +28,9 @@
 
     <title>Generate, but Verify: Reducing Hallucination in Vision-Language Models with Retrospective Resampling</title>
     <link rel="icon" type="image/x-icon" href="static/images/favicon_io/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="static/images/favicon_io">
-    <link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon_io/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="static/images/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./static/images/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./static/images/favicon_io/favicon-16x16.png">
     <link rel="manifest" href="static/images/favicon_io/site.webmanifest">
     <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
 
@@ -56,7 +56,7 @@
         <div class="hero-body">
             <div class="container is-max-desktop">
                 <div class="columns is-centered is-vcentered">
-                    <div class="column "><img src="static/images/vhs_logo.png" height="187" width="187"></div>
+                    <div class="column "><img src="static/images/REVERSE_logo.png" height="700" width="700"></div>
                     <div class="column has-text-centered is-four-fifths is-vcentered">
                         <h1 class="title is-2 publication-title">Generate, but Verify: Reducing Visual Hallucination in Vision-Language Models with Retrospective Resampling</h1>
                     </div>
@@ -150,7 +150,17 @@
                             To mitigate this, we introduce <strong>REVERSE</strong> (<strong>RE</strong>trospective <strong>VER</strong>ification and <strong>SE</strong>lf-correction), a unified framework that trains a VLM to both <strong>detect</strong> and <strong>fix</strong> its own hallucinations on-the-fly.
                         </p>
                     </div>
-
+                    <h2 class="title is-4">Video Demonstration</h2> 
+                    <div class="content has-text-justified">
+                        <div class="columns is-centered">
+                            <div class="column is-full">
+                                <video class="is-fullwidth" autoplay loop muted playsinline>
+                                    <source src="./static/images/fig1_final.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -271,6 +281,21 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="section ">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">Results</h2>
+                </div>
+            </div>
+            <!-- <div id="results-carousel" class="carousel results-carousel"> -->
+                <div class="item is-vcentered">
+                    <img src="static/images/results.png" alt="" />
+                </div> 
+            <!-- </div>
         </div>
     </section>
 

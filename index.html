@@ -7,7 +7,7 @@
     <!-- Replace the content tag with appropriate information -->
     <meta name="description" content="Generate, but Verify: Reducing Hallucination in Vision-Language Models with Retrospective Resampling">
     <meta property="og:title" content="REVERSE" />
-    <meta property="og:description" content="Large Multimodal Models (LMMs) have made significant strides in visual question-answering for single images. Recent advancements like long-context LMMs have allowed them to ingest larger, or even multiple, images. However, the ability to process a large number of visual tokens does not guarantee effective retrieval and reasoning for multi-image question answering (MIQA), especially in real-world applications like photo album searches or satellite imagery analysis. In this work, we first assess the limitations of current benchmarks for long-context LMMs. We address these limitations by introducing a new vision-centric, long-context benchmark, Visual Haystacks (VHs). We comprehensively evaluate both open-source and proprietary models on VHs, and demonstrate that these models struggle when reasoning across potentially unrelated images, perform poorly on cross-image reasoning, as well as exhibit biases based on the placement of key information within the context window. Towards a solution, we introduce MIRAGE (Multi-Image Retrieval Augmented Generation), an open-source, lightweight visual-RAG framework that processes up to 10k images on a single 40G A100 GPU -- far surpassing the 1k-image limit of contemporary models. MIRAGE demonstrates up to 13% performance improvement over existing open-source LMMs on VHs, sets a new state-of-the-art on the RetVQA multi-image QA benchmark, and achieves competitive performance on single-image QA with state-of-the-art LMMs." />
+    <meta property="og:description" content="Vision-Language Models (VLMs) excel at visual understanding but often suffer from visual hallucinations, where they generate descriptions of nonexistent objects, actions, or concepts, posing significant risks in safety-critical applications. Existing hallucination mitigation methods typically follow one of two paradigms: generation adjustment, which modifies decoding behavior to align text with visual inputs, and post-hoc verification, where external models assess and correct outputs While effective, generation adjustment methods often rely on heuristics and lack correction mechanisms, while post-hoc verification is complicated typically requiring multiple models and tending to reject outputs rather than refine them. In this work, we introduce REVERSE, a unified framework that integrates hallucination-aware training with on-the-fly self verification. By leveraging a new hallucination-verification dataset containing over 1.3M semi-synthetic samples, along with a novel inference-time retrospective resampling technique, our approach enables VLMs to both detect hallucinations during generation and dynamically revise those hallucinations. Our evaluations show that REVERSE achieves state-of-the-art hallucination reduction, outperforming the best existing methods by up to 20% on CHAIR-MSCOCO and 50% on Halo Quest." />
     <meta property="og:url" content="http://reverse-vlm.github.io" />
     <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X630-->
     <meta property="og:image" content="/static/images/REVERSE_logo.png" />
@@ -16,13 +16,13 @@
 
 
     <meta name="twitter:title" content="Generate, but Verify: Reducing Hallucination in Vision-Language Models with Retrospective Resampling">
-    <meta name="twitter:description" content="Large Multimodal Models (LMMs) have made significant strides in visual question-answering for single images. Recent advancements like long-context LMMs have allowed them to ingest larger, or even multiple, images. However, the ability to process a large number of visual tokens does not guarantee effective retrieval and reasoning for multi-image question answering (MIQA), especially in real-world applications like photo album searches or satellite imagery analysis. In this work, we first assess the limitations of current benchmarks for long-context LMMs. We address these limitations by introducing a new vision-centric, long-context benchmark, Visual Haystacks (VHs). We comprehensively evaluate both open-source and proprietary models on VHs, and demonstrate that these models struggle when reasoning across potentially unrelated images, perform poorly on cross-image reasoning, as well as exhibit biases based on the placement of key information within the context window. Towards a solution, we introduce MIRAGE (Multi-Image Retrieval Augmented Generation), an open-source, lightweight visual-RAG framework that processes up to 10k images on a single 40G A100 GPU -- far surpassing the 1k-image limit of contemporary models. MIRAGE demonstrates up to 13% performance improvement over existing open-source LMMs on VHs, sets a new state-of-the-art on the RetVQA multi-image QA benchmark, and achieves competitive performance on single-image QA with state-of-the-art LMMs." />
+    <meta name="twitter:description" content="Vision-Language Models (VLMs) excel at visual understanding but often suffer from visual hallucinations, where they generate descriptions of nonexistent objects, actions, or concepts, posing significant risks in safety-critical applications. Existing hallucination mitigation methods typically follow one of two paradigms: generation adjustment, which modifies decoding behavior to align text with visual inputs, and post-hoc verification, where external models assess and correct outputs While effective, generation adjustment methods often rely on heuristics and lack correction mechanisms, while post-hoc verification is complicated typically requiring multiple models and tending to reject outputs rather than refine them. In this work, we introduce REVERSE, a unified framework that integrates hallucination-aware training with on-the-fly self verification. By leveraging a new hallucination-verification dataset containing over 1.3M semi-synthetic samples, along with a novel inference-time retrospective resampling technique, our approach enables VLMs to both detect hallucinations during generation and dynamically revise those hallucinations. Our evaluations show that REVERSE achieves state-of-the-art hallucination reduction, outperforming the best existing methods by up to 20% on CHAIR-MSCOCO and 50% on Halo Quest." />
     <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X600-->
     <meta name="twitter:image" content="static/images/REVERSE_logo.png">
-    <meta name="twitter:card" content="REVERSE Project Logo: A cartoon llava character holding a tool to fix hallucination.">
+    <meta name="twitter:card" content="REVERSE Project Logo: A cartoon llava character holding a tool that fixes hallucination.">
     <!-- Keywords for your paper to be indexed by-->
     <meta name="keywords"
-        content="Large Multimodal Models, Long-context Reasoning, VQA, Image Retrieval">
+        content="Large Multimodal Models, Hallucinations, Retrospective Resampling">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
@@ -102,6 +102,7 @@
                                     </span>
 
                                     <span class="link-block">
+                                        <!-- TODO: Dataset -->
                                         <a href="https://github.com/visual-haystacks/vhs_benchmark" target="_blank"
                                             class="external-link button is-normal is-rounded is-dark">
                                             <span class="icon">
@@ -112,6 +113,7 @@
                                     </span>
 
                                     <span class="link-block">
+                                        <!-- TODO: Code/Model -->
                                         <a href="https://github.com/visual-haystacks/mirage" target="_blank"
                                             class="external-link button is-normal is-rounded is-dark">
                                             <span class="icon">
@@ -136,30 +138,35 @@
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
 
-                    <!-- YouTube Video Link -->
-<!--                     <h2 class="title is-4">Video Introduction</h2>
-                    <div class="content has-text-justified">
-                        <div class="video-wrapper">
-                            <iframe src="https://www.youtube.com/embed/PZ7H9vNZZag" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    </div> -->
                     <h2 class="title is-4">Visual Hallucination is Still a Problem</h2>
                     <div class="content has-text-justified">
                         <p>
-                            Vision-Language Models (VLMs) have made huge strides on benchmarks like image captioning and VQA. But they still hallucinate — generating plausible-sounding text that's clearly not grounded in the image.
-                            To mitigate this, we introduce <strong>REVERSE</strong> (<strong>RE</strong>trospective <strong>VER</strong>ification and <strong>SE</strong>lf-correction), a unified framework that trains a VLM to both <strong>detect</strong> and <strong>fix</strong> its own hallucinations on-the-fly.
+                            Vision-Language Models (VLMs) have made huge strides on benchmarks like image captioning and VQA. But they still suffer from hallucinations, where they generate descriptions on nonexistent objects, actions, or concepts, posing significant risks in safety-critical applications.
                         </p>
                     </div>
-                    <h2 class="title is-4">Video Demonstration</h2> 
                     <div class="content has-text-justified">
-                        <div class="columns is-centered">
-                            <div class="column is-full">
-                                <video class="is-fullwidth" autoplay loop muted playsinline>
-                                    <source src="./static/images/fig1_final.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                        </div>
+                        <p><strong>Previous approaches generally fall into two paradigms:</strong></p>
+                        <ul>
+                            <li>
+                                <strong>Generation Adjustment</strong>: These methods aim to improve the alignment of textual outputs with visual inputs by modifying the 
+                                VLM’s generation process. This can be done either in a <em>training-free</em> manner (adjusting logits at <em>decoding time</em>) 
+                                or through a <em>training-based</em> approach (introducing additional supervision signals or custom objective functions).
+                            </li>
+                            <li>
+                                <strong>Post-hoc Verification</strong>: These approaches introduce large external models (e.g., GPT-4) to 
+                                <em>evaluate and verify outputs</em> after generation.
+                            </li>
+                        </ul>
+                        <p>
+                            However, <b>generation adjustment methods</b> struggle to correct erroneous tokens <em>once generated</em> and do not leverage 
+                            retrospective reasoning to assess output quality. On the other hand, <b>post-hoc verification</b> is computationally expensive, 
+                            complex, and often results in <em>generic refusals</em> rather than targeted improvements.
+                        </p>
+                        <video class="is-fullwidth" autoplay loop muted playsinline>
+                            <source src="./static/images/fig1_final2.mp4" type="video/mp4">
+                            <!-- TODO: diff source? -->
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                 </div>
             </div>
@@ -167,35 +174,56 @@
     </section>
     <!-- End paper abstract -->
 
-
-
-    <!-- SESAME -->
+    <!-- REVERSE -->
     <section class="section ">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
-                    <h2 class="title is-4">Why REVERSE?</h2>
+                    <h2 class="title is-4">REVERSE: REtrospective VERification and SElf-correction </h2>
                 </div>
             </div>
-            <!-- <div id="results-carousel" class="carousel results-carousel"> -->
-                <div class="content has-text-justified">
-                    <p>Previous approaches fall into two camps:
-                    <ul>
-                        <li>
-                            <b>Generation adjustment</b>: Uses custom losses or decoding tweaks to reduce hallucination. But these can't fix errors after generation.
-                        </li>
-                        <li>
-                            <b>Post-hoc verification</b>: Adds an external verifier (e.g., GPT-4) after generation. Accurate, but slow, complex, and often leads to generic refusals.
-                        </li>
-                    </ul>
+            <p>
+                To mitigate this, we introduce <strong>REVERSE</strong> (<strong>RE</strong>trospective <strong>VER</strong>ification and <strong>SE</strong>lf-correction), a unified framework that trains a VLM to both 
+                <em>detect</em> and <em>fix</em> its own hallucinations on the fly. REVERSE is the first framework to integrate generation adjustment with online 
+                post-hoc verification within a single VLM architecture. REVERSE detects, backtracks, and corrects hallucinations during the decoding process.
+            </p>
+
+            <div class="content has-text-justified">
+                <ul>
+                    <li>
+                        <b>Introducing Three Special Tokens</b>: REVERSE training introduces three tokens which can be used to explicity mark key phrases to represent the model's confidence level:
+                        <br>
+                        <ul>
+                            <li>
+                                <code>&lt;/SPAN&gt;</code>: Start of a key phrase
+                            </li>
+                            <li>
+                                <code>&lt;/CN&gt;</code>: End of confident (grounded) phrase
+                            </li>
+                            <li>
+                                <code>&lt;/UN&gt;</code>: End of unconfident (potentially hallucinated) phrase
+                            </li>
+                        </ul>
+                    </li>
+                    <br>
                     <p>
-                        <strong>REVERSE</strong> takes a different route: ✅ A single VLM that detects, backtracks, and corrects hallucinations during decoding.
+                        These tokens, when placed before or after phrases in a scene, serve as ad-hoc classifiers for the model's confidence. 
+                        This enables the model not only to flag uncertainty but also to determine  <em>where</em> to backtrack.
                     </p>
-                </div>
-                <!-- <div class="item is-vcentered">
-                    <img src="static/images/figures/fig1.png" alt="VHs dataset overview" />
-                </div> -->
-            <!-- </div> -->
+                </ul>
+                <ul>
+                    <li>
+                        <b>A New Training Dataset</b>:
+                            Annotating our data with such tokens, we built <strong>1.3M-sample instruction-tuning dataset</strong>, augmenting LLaVA-v1.5.
+                            Our dataset maintains a similar overall composition from the LLaVA-v1.5. dataset, while preserving the data quality, the same average question-answer pairs per sample and a comparable question type distribution.
+                    </li>
+                    <div class="item is-vcentered">
+                        <!-- <img src="static/images/dataset_example.png" alt="" /> -->
+                        <img src="static/images/dataset_example2.png" alt="" />
+                    </div>
+                    <!-- TODO: Dataset example picture -->
+                </ul>
+            </div>
         </div>
     </section>
 
@@ -203,81 +231,66 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
-                    <h2 class="title is-4">How It Works: Three Key Ingredients</h2>
+                    <h2 class="title is-4">How it works</h2>
                     <div class="content has-text-justified">
-                        <ul>
-                            <li>
-                                <b>Explicit Confidence Estimation</b> 
-                                <br>
-                                VLMs often rely on token probabilities as a proxy for confidence — but those are unreliable and poorly calibrated. So we train the model to explicitly tag phrase-level confidence using new tokens:
+                        <li>
+                            <b> Hallucination Aware Training</b>
+                            <ul>
+                                Three Objectives of training loss:
                                 <ul>
                                     <li>
-                                        <b>&lt;SPAN&gt;</b>: Start of a key phrase
+                                        <b>Standard next token prediction</b>: We enable conventional instruction tuning to allow VLMs to perform next token prediction to generate accurate answers.
                                     </li>
                                     <li>
-                                        <b>&lt;/CN&gt;</b>: End of confident (grounded) phrase
+                                        <b>Avoiding hallucination modeling</b>: We reduce the likelihood of generating the hallucinated tokens that we have introduced in the new dataset.
                                     </li>
                                     <li>
-                                        <b>&lt;/UN&gt;</b>: End of unconfident (potentially hallucinated) phrase
+                                        <b>Confidence tagging</b>: 
+                                        <!-- (learn when to emit &lt;/UN&gt; vs &lt;/CN&gt;) -->
+                                        The model learns when to generate <b>&lt;SPAN&gt;</b> at the start of the key phrases, and <b>&lt;CN&gt;</b> or <b>&lt;UN&gt;</b> as explicit confidence estimators around those phrases.
                                     </li>
                                 </ul>
                             </li>
                             <br>
                             <p>
-                                This lets the model not only flag uncertainty but also decide where to backtrack. We end up building a 1.3M-sample instruction-tuning dataset, augmenting LLaVA-v1.5, to teach the model this skill. Ensuring the quality of this dataset includes designing how to segment text into phrases, injecting realistic hallucinations, and even handling multilingual cases — not trivial (details are in our paper)!
+                                We achieve all of these goals by assigning a weight to each token during training: positive weights to<b>&lt;SPAN&gt;</b> and <b>&lt;CN&gt;</b>, zero-weights are assigned to tokens within <b>&lt;SPAN&gt;</b> and <b>&lt;UN&gt;</b>(i.e., masking out the targets) to avoid impacting the likelihood when training on ungrounded data.
+                                <!-- TODO: Provide the loss function?  -->
                             </p>
                         </ul>
-
-
                     </div>
+                    <!-- TODO: perhaps put Figure 3 -->
+                 
+                    <!-- <h2 class="title is-4">Retrospective Resampling</h2> -->
                     <div class="content has-text-justified">
+                    <li>
+                        <b> Retrospective Resampling</b>
                         <ul>
+                            <!-- <b>Retrospective Resampling</b> -->
+                            During inference, the model follows standard next-token prediction but continuously monitors the likelihood of <b>&lt;UN&gt;</b>, triggering retrospective resampling when that likelihood exceeds a pre-defined threshold.
+                            When the model predicts an unconfident phrase (marked with <b>&lt;UN&gt;</b>), REVERSE activates a verification loop to resample and correct the hallucination: <br>
+
                             <li>
-                                <b>Hallucination-Aware Training</b>
-                                <br>
-                                Our training loss has three objectives:
+                                <strong>Backtracking Strategies:</strong> Roll back to the latest <b>&lt;CN&gt;</b> tag, or further if needed, once the model’s unconfidence exceeds a threshold.
+                            </li>
+                            <li>
+                                <strong>Correction Strategies:</strong> The model uses two techniques for self-correction:
                                 <ul>
                                     <li>
-                                        <b>Standard next token prediction</b>: Standard VLM objective for the correct captioning / VQA data
+                                        <strong>Rejection Sampling:</strong> We refine uncertain phrases by resampling multiple times at an increased temperature, seeking an alternative lower than the threshold.</li>
                                     </li>
                                     <li>
-                                        <b>Confidence tagging</b>: (learn when to emit &lt;/UN&gt; vs &lt;/CN&gt;)
+                                        <strong>Query Rewriting:</strong> We augment the user query with hints pointing out the potential hallucination to discourage repetition. This improves the model's ability to recognize the hint, providing stronger sginals for the model to do self-correction.
+                                        <!-- query sys prompt  -->
                                     </li>
-                                    <li>
-                                        <b>Avoiding hallucination modeling</b>: model sees hallucinated inputs but is not trained to generate them
                                 </ul>
                             </li>
-                            <br>
-                            <p>
-                                So the loss is applied like the following animation (please see our paper for more details):
-                            </p>
                         </ul>
-                    </div>
-                    <!-- <div class="item is-vcentered">
-                        <img src="static/images/figures/fig2.png" alt="Effectiveness of LMMs with increasing number of images" width="90%">
-                    </div> -->
-
-                    <div class="content has-text-justified">
-                        <ul>
-                            <li>
-                                <b>Retrospective Resampling</b>
-                                <br>
-                                When the model predicts an unconfident phrase (marked with <code>&lt;/UN&gt;</code>), REVERSE activates a verification loop to resample and correct the hallucination:
-                                <li>
-                                    <strong>Backtrack:</strong> Roll back to the latest <code>&lt;/CN&gt;</code> tag, or further if needed, once the model’s unconfidence exceeds a threshold.
-                                </li>
-                                <li>
-                                    <strong>Correction:</strong> The model uses two techniques in tandem:
-                                    <ul>
-                                        <li>
-                                            strong>Rejection Sampling:</strong> Temperature is increased to encourage diverse alternatives; unconfident outputs are rejected.</li>
-                                        </li>
-                                        <li><strong>Query Rewriting:</strong> The user query is augmented with hints pointing out the potential hallucination to discourage repetition.</li>
-                                    </ul>
-                                </li>
-                                <li><strong>Regeneration:</strong> Generation resumes from the backtracked point, continuing until a confident phrase is produced or retry limits are hit.</li>
-                            </li>
-                        </ul>
+                    </li> <br>
+                    <!-- <p>
+                        <div class="item is-vcentered">
+                            <img src="static/images/fig3_copy.001.png" alt="How it works" />
+                        </div> 
+                    </p> -->
                     </div>
                 </div>
             </div>
@@ -288,14 +301,29 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
-                    <h2 class="title is-4">Results</h2>
+                    <div class="content has-text-justified">
+                        <h2 class="title is-4">Comprehensive Analysis</h2>
+                        <b> Threshold and Temperature Ablation Studies</b>
+                        <div class="item is-vcentered">
+                            <img src="static/images/threshold_temp.png" alt="" />
+                        </div>
+
+                        <h2 class="title is-4">Results</h2>
+                        <b> Image Captioning Tasks</b>
+                        <div class="item is-vcentered">
+                            <img src="static/images/results.png" alt="" />
+                        </div>
+                        <b> Open-ended Question Answering </b>
+                        <div class="item is-vcentered">
+                            <img src="static/images/results.png" alt="" />
+                        </div>
+                        <b> Discriminative Questions </b>
+                        <div class="item is-vcentered">
+                            <img src="static/images/results.png" alt="" />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- <div id="results-carousel" class="carousel results-carousel"> -->
-                <div class="item is-vcentered">
-                    <img src="static/images/results.png" alt="" />
-                </div> 
-            <!-- </div>
         </div>
     </section>
 

@@ -162,14 +162,17 @@
                             retrospective reasoning to assess output quality. On the other hand, <b>post-hoc verification</b> is computationally expensive, 
                             complex, and often results in <em>generic refusals</em> rather than targeted improvements.
                         </p>
-                        <video class="is-fullwidth" autoplay loop muted playsinline>
-                            <source src="./static/images/fig1_final2.mp4" type="video/mp4">
-                            <!-- TODO: diff source? -->
-                            Your browser does not support the video tag.
-                        </video>
+
                     </div>
                 </div>
             </div>
+            <video class="is-fullwidth" autoplay loop muted playsinline>
+                <!-- <source src="./static/images/website_figures_final.mp4" type="video/mp4"> -->
+                <source src="./static/images/fig1_final.mp4" type="video/mp4">
+                <h2 class="title is-4">REVERSE: REtrospective VERification and SElf-correction </h2>
+                <!-- TODO: diff source? -->
+                Your browser does not support the video tag.
+            </video>
         </div>
     </section>
     <!-- End paper abstract -->
@@ -216,13 +219,13 @@
                         <b>A New Training Dataset</b>:
                             Annotating our data with such tokens, we built <strong>1.3M-sample instruction-tuning dataset</strong>, augmenting LLaVA-v1.5.
                             Our dataset maintains a similar overall composition from the LLaVA-v1.5. dataset, while preserving the data quality, the same average question-answer pairs per sample and a comparable question type distribution.
-                    </li>
-                    <div class="item is-vcentered">
-                        <!-- <img src="static/images/dataset_example.png" alt="" /> -->
-                        <img src="static/images/dataset_example2.png" alt="" />
-                    </div>
+                    </li> 
                     <!-- TODO: Dataset example picture -->
                 </ul>
+            </div>
+            <div class="item is-vcentered">
+                <!-- <img src="static/images/dataset_example.png" alt="" /> -->
+                <img src="static/images/dataset_example2.png" alt="" />
             </div>
         </div>
     </section>
@@ -251,10 +254,8 @@
                                     </li>
                                 </ul>
                             </li>
-                            <br>
                             <p>
                                 We achieve all of these goals by assigning a weight to each token during training: positive weights to<b>&lt;SPAN&gt;</b> and <b>&lt;CN&gt;</b>, zero-weights are assigned to tokens within <b>&lt;SPAN&gt;</b> and <b>&lt;UN&gt;</b>(i.e., masking out the targets) to avoid impacting the likelihood when training on ungrounded data.
-                                <!-- TODO: Provide the loss function?  -->
                             </p>
                         </ul>
                     </div>
@@ -286,11 +287,11 @@
                             </li>
                         </ul>
                     </li> <br>
-                    <!-- <p>
+                    <p>
                         <div class="item is-vcentered">
                             <img src="static/images/fig3_copy.001.png" alt="How it works" />
                         </div> 
-                    </p> -->
+                    </p>
                     </div>
                 </div>
             </div>

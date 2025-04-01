@@ -138,42 +138,37 @@
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
 
-                    <h2 class="title is-4">Visual Hallucination is Still a Problem</h2>
+                    <h2 class="title is-4">VLMs suffer from Hallucinations </h2>
                     <div class="content has-text-justified">
                         <p>
-                            Vision-Language Models (VLMs) have made huge strides on benchmarks like image captioning and VQA. But they still suffer from hallucinations, where they generate descriptions on nonexistent objects, actions, or concepts, posing significant risks in safety-critical applications.
+                            Vision-Language Models (VLMs) have made huge strides on tasks like image captioning or visual question answering. However, they still suffer from hallucinations, where they generate descriptions on nonexistent objects or concepts.
                         </p>
                     </div>
                     <div class="content has-text-justified">
                         <p><strong>Previous approaches generally fall into two paradigms:</strong></p>
+                        <!-- <div class="item is-vcentered">
+                            <img src="static/images/intro_2.png" alt="How it works" />
+                        </div>  -->
                         <ul>
                             <li>
-                                <strong>Generation Adjustment</strong>: These methods aim to improve the alignment of textual outputs with visual inputs by modifying the 
+                                <strong>Generation Adjustment</strong>: This method aims to improve the alignment of textual outputs with visual inputs by modifying the 
                                 VLM’s generation process. This can be done either in a <em>training-free</em> manner (adjusting logits at <em>decoding time</em>) 
                                 or through a <em>training-based</em> approach (introducing additional supervision signals or custom objective functions).
                             </li>
                             <li>
-                                <strong>Post-hoc Verification</strong>: These approaches introduce large external models (e.g., GPT-4) to 
+                                <strong>Post-hoc Verification</strong>: This method introduces large external models (e.g., GPT-4) to 
                                 <em>evaluate and verify outputs</em> after generation.
                             </li>
                         </ul>
                         <p>
                             However, <b>generation adjustment methods</b> struggle to correct erroneous tokens <em>once generated</em> and do not leverage 
                             retrospective reasoning to assess output quality. On the other hand, <b>post-hoc verification</b> is computationally expensive, 
-                            complex, and often results in <em>generic refusals</em> rather than targeted improvements.
+                             and often results in <em>generic refusals</em> rather than targeted improvements.
                         </p>
 
                     </div>
                 </div>
             </div>
-            <video class="is-fullwidth" autoplay loop muted playsinline>
-                <!-- <source src="./static/images/website_figures_final.mp4" type="video/mp4"> -->
-                <!-- <source src="./static/images/fig1_final.mp4" type="video/mp4"> -->
-                <source src="./static/images/fig1_only_reverse.mp4" type="video/mp4">
-                <h2 class="title is-4">REVERSE: REtrospective VERification and SElf-correction </h2>
-                <!-- TODO: diff source? -->
-                Your browser does not support the video tag.
-            </video>
         </div>
     </section>
     <!-- End paper abstract -->
@@ -187,11 +182,23 @@
                 </div>
             </div>
             <p>
-                To mitigate this, we introduce <strong>REVERSE</strong> (<strong>RE</strong>trospective <strong>VER</strong>ification and <strong>SE</strong>lf-correction), a unified framework that trains a VLM to both 
-                <em>detect</em> and <em>fix</em> its own hallucinations on the fly. REVERSE is the first framework to integrate generation adjustment with online 
-                post-hoc verification within a single VLM architecture. REVERSE detects, backtracks, and corrects hallucinations during the decoding process.
+                To mitigate this, we introduce <strong>REVERSE</strong> (<strong>RE</strong>trospective <strong>VER</strong>ification and <strong>SE</strong>lf-correction), the first framework to integrate generation adjustment with online 
+                post-hoc verification within a single VLM architecture. REVERSE <b>detects</b>, <b>backtracks</b>, and <b>corrects hallucinations</b> during the decoding process.
             </p>
+            <video class="is-fullwidth" autoplay loop muted playsinline>
+                <!-- <source src="./static/images/website_figures_final.mp4" type="video/mp4"> -->
+                <!-- <source src="./static/images/fig1_final.mp4" type="video/mp4"> -->
+                <source src="./static/images/fig1_only_reverse.mp4" type="video/mp4">
+                <h2 class="title is-4">REVERSE: REtrospective VERification and SElf-correction </h2>
+                <!-- TODO: diff source? -->
+                Your browser does not support the video tag.
+            </video>
 
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-full">
+                    <h2 class="title is-4">A New Training Dataset </h2>
+                </div>
+            </div>
             <div class="content has-text-justified">
                 <ul>
                     <li>
@@ -235,10 +242,8 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
-                    <h2 class="title is-4">How it works</h2>
+                    <h2 class="title is-4">How it works: Hallucination Aware Training</h2>
                     <div class="content has-text-justified">
-                        <li>
-                            <b> Hallucination Aware Training</b>
                             <ul>
                                 Three Objectives of training loss:
                                 <ul>
@@ -254,7 +259,6 @@
                                         The model learns when to generate <b>&lt;SPAN&gt;</b> at the start of the key phrases, and <b>&lt;CN&gt;</b> or <b>&lt;UN&gt;</b> as explicit confidence estimators around those phrases.
                                     </li>
                                 </ul>
-                            </li>
                             <p>
                                 We achieve all of these goals by assigning a weight to each token during training: positive weights to<b>&lt;SPAN&gt;</b> and <b>&lt;CN&gt;</b>, zero-weights are assigned to tokens within <b>&lt;SPAN&gt;</b> and <b>&lt;UN&gt;</b>(i.e., masking out the targets) to avoid impacting the likelihood when training on ungrounded data.
                             </p>
@@ -262,10 +266,8 @@
                     </div>
                     <!-- TODO: perhaps put Figure 3 -->
                  
-                    <!-- <h2 class="title is-4">Retrospective Resampling</h2> -->
+                    <h2 class="title is-4">How it works: Retrospective Resampling</h2>
                     <div class="content has-text-justified">
-                    <li>
-                        <b> Retrospective Resampling</b>
                         <ul>
                             <!-- <b>Retrospective Resampling</b> -->
                             During inference, the model follows standard next-token prediction but continuously monitors the likelihood of <b>&lt;UN&gt;</b>, triggering retrospective resampling when that likelihood exceeds a pre-defined threshold.
@@ -287,15 +289,14 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li> <br>
-                    <p>
-                        <div class="item is-vcentered">
-                            <img src="static/images/fig3_copy.001.png" alt="How it works" />
-                        </div> 
-                    </p>
+                     <br>
                     </div>
                 </div>
             </div>
+            <video class="is-fullwidth" autoplay loop muted playsinline>
+                <source src="./static/images/fig3_animation.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </section>
 
@@ -303,18 +304,13 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
+                    <h2 class="title is-4">Examples</h2>
                     <div class="content has-text-justified">
-                        <h2 class="title is-4">Comprehensive Analysis</h2>
-                        <b> Threshold and Temperature Ablation Studies</b>
+                        <p> Examples from AMBER benchmark evaluation for comparison. Hallucinated objects from other VLMs are highlighted in red. </p>
                         <div class="item is-vcentered">
-                            <img src="static/images/threshold_temp.png" alt="" />
+                            <img src="static/images/qualitative_examples_2.png" alt="" />
                         </div>
-
                         <h2 class="title is-4">Results</h2>
-                        <b> Examples </b>
-                        <div class="item is-vcentered">
-                            <img src="static/images/qualitative_examples.png" alt="" />
-                        </div>
                         <b> Image Captioning Tasks</b>
                         <div class="item is-vcentered">
                             <img src="static/images/results.png" alt="" />

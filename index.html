@@ -133,7 +133,7 @@
 
 
     <!-- Paper abstract -->
-    <section class="section hero ">
+    <section class="section hero">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
@@ -188,39 +188,25 @@
             <video class="is-fullwidth" autoplay loop muted playsinline>
                 <!-- <source src="./static/images/website_figures_final.mp4" type="video/mp4"> -->
                 <!-- <source src="./static/images/fig1_final.mp4" type="video/mp4"> -->
-                <source src="./static/images/fig1_only_reverse.mp4" type="video/mp4">
+                <source src="./static/images/fig1_final.mp4" type="video/mp4">
                 <h2 class="title is-4">REVERSE: REtrospective VERification and SElf-correction </h2>
                 <!-- TODO: diff source? -->
                 Your browser does not support the video tag.
             </video>
+        </div>
+    </section>
 
+    <section class="section hero">
+        <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
-                    <h2 class="title is-4">A New Training Dataset </h2>
+                    <h2 class="title is-4">REVERSE's Training Recipe: A New Training Data with Custom Loss</h2>
                 </div>
             </div>
             <div class="content has-text-justified">
                 <ul>
                     <li>
-                        <b>Introducing Three Special Tokens</b>: REVERSE training introduces three tokens which can be used to explicity mark key phrases to represent the model's confidence level:
-                        <br>
-                        <ul>
-                            <li>
-                                <code>&lt;/SPAN&gt;</code>: Start of a key phrase
-                            </li>
-                            <li>
-                                <code>&lt;/CN&gt;</code>: End of confident (grounded) phrase
-                            </li>
-                            <li>
-                                <code>&lt;/UN&gt;</code>: End of unconfident (potentially hallucinated) phrase
-                            </li>
-                        </ul>
-                    </li>
-                    <br>
-                    <p>
-                        These tokens, when placed before or after phrases in a scene, serve as ad-hoc classifiers for the model's confidence. 
-                        This enables the model not only to flag uncertainty but also to determine  <em>where</em> to backtrack.
-                    </p>
+                        <b>Introducing Three Special Tokens</b>: REVERSE training introduces three tokens which can be used to explicity mark key phrases to represent the model's confidence level: <code>&lt;SPAN&gt;</code> marks the start of a key phrase. The phrase then ends with either <code>&lt;/CN&gt;</code> (for confident/grounded) or <code>&lt;/UN&gt;</code> (for unconfident/potentially hallucinated). These tokens act like in-line confidence classifiers, enabling the model not only to flag uncertainty but also to determine  <em>where</em> to backtrack.
                 </ul>
                 <ul>
                     <li>
@@ -230,51 +216,42 @@
                     </li> 
                     <!-- TODO: Dataset example picture -->
                 </ul>
-            </div>
-            <div class="item is-vcentered">
-                <!-- <img src="static/images/dataset_example.png" alt="" /> -->
-                <img src="static/images/dataset_example2.png" alt="" />
+                    <div class="item is-vcentered" style="text-align: center;">
+                        <!-- <img src="static/images/dataset_example.png" alt="" /> -->
+                        <img src="static/images/dataset_example2.png" alt="" style="width: 90%; height: auto;" />
+                    </div>
+                <ul>
+                    <li>
+                      <b>Hallucination-Aware Training Objectives</b>: 
+                      <ul>
+                        <li>Standard next-token prediction: Retains conventional instruction tuning behavior for answer generation.</li>
+                        <li>Avoiding hallucination modeling: Minimizes the likelihood of producing tokens labeled as hallucinated in the dataset.</li>
+                        <li>Confidence tagging: Teaches the model when to emit <code>&lt;SPAN&gt;</code>, and whether to end with <code>&lt;/CN&gt;</code> or <code>&lt;/UN&gt;</code> as a signal of groundedness.</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <p style="margin-left: 2rem;">
+                    We achieve this through a weighted token loss: positive weights are applied to <code>&lt;SPAN&gt;</code> and <code>&lt;/CN&gt;</code> tokens, while zero weights are assigned to tokens inside <code>&lt;SPAN&gt;...&lt;/UN&gt;</code> sections—effectively masking them to avoid penalizing the model when generating ungrounded phrases.
+                  </p>
             </div>
         </div>
     </section>
-
     <section class="section hero">
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
-                    <h2 class="title is-4">How it works: Hallucination Aware Training</h2>
-                    <div class="content has-text-justified">
-                            <ul>
-                                Three Objectives of training loss:
-                                <ul>
-                                    <li>
-                                        <b>Standard next token prediction</b>: We enable conventional instruction tuning to allow VLMs to perform next token prediction to generate accurate answers.
-                                    </li>
-                                    <li>
-                                        <b>Avoiding hallucination modeling</b>: We reduce the likelihood of generating the hallucinated tokens that we have introduced in the new dataset.
-                                    </li>
-                                    <li>
-                                        <b>Confidence tagging</b>: 
-                                        <!-- (learn when to emit &lt;/UN&gt; vs &lt;/CN&gt;) -->
-                                        The model learns when to generate <b>&lt;SPAN&gt;</b> at the start of the key phrases, and <b>&lt;CN&gt;</b> or <b>&lt;UN&gt;</b> as explicit confidence estimators around those phrases.
-                                    </li>
-                                </ul>
-                            <p>
-                                We achieve all of these goals by assigning a weight to each token during training: positive weights to<b>&lt;SPAN&gt;</b> and <b>&lt;CN&gt;</b>, zero-weights are assigned to tokens within <b>&lt;SPAN&gt;</b> and <b>&lt;UN&gt;</b>(i.e., masking out the targets) to avoid impacting the likelihood when training on ungrounded data.
-                            </p>
-                        </ul>
-                    </div>
+                    
                     <!-- TODO: perhaps put Figure 3 -->
                  
-                    <h2 class="title is-4">How it works: Retrospective Resampling</h2>
+                    <h2 class="title is-4">REVERSE's Inference Paradigm: Retrospective Resampling</h2>
                     <div class="content has-text-justified">
-                        <ul>
+                        <p style="margin-left: 1rem;">
                             <!-- <b>Retrospective Resampling</b> -->
-                            During inference, the model follows standard next-token prediction but continuously monitors the likelihood of <b>&lt;UN&gt;</b>, triggering retrospective resampling when that likelihood exceeds a pre-defined threshold.
-                            When the model predicts an unconfident phrase (marked with <b>&lt;UN&gt;</b>), REVERSE activates a verification loop to resample and correct the hallucination: <br>
-
+                            During inference, the model performs standard next-token prediction while continuously monitoring the likelihood of <code>&lt;/UN&gt;</code>. If this likelihood exceeds a threshold, REVERSE triggers a self-correction loop—resampling the output to correct potential hallucinations. It’s like doing a little DFS-style backtracking, just like we learned in algorithm class!
+                        </p>
+                        <ul>
                             <li>
-                                <strong>Backtracking Strategies:</strong> Roll back to the latest <b>&lt;CN&gt;</b> tag, or further if needed, once the model’s unconfidence exceeds a threshold.
+                                <strong>Backtracking Strategies:</strong> Roll back to the latest <code>&lt;/CN&gt;</code> tag, or further if needed, once <code>&lt;/UN&gt;</code> exceeds a threshold.
                             </li>
                             <li>
                                 <strong>Correction Strategies:</strong> The model uses two techniques for self-correction:
@@ -289,7 +266,6 @@
                                 </ul>
                             </li>
                         </ul>
-                     <br>
                     </div>
                 </div>
             </div>

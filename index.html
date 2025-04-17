@@ -231,7 +231,7 @@
                     </li>
                   </ul>
                   <p style="margin-left: 2rem;">
-                    We achieve this through a weighted token loss: positive weights are applied to <code>&lt;SPAN&gt;</code> and <code>&lt;/CN&gt;</code> tokens, while zero weights are assigned to tokens inside <code>&lt;SPAN&gt;...&lt;/UN&gt;</code> sections—effectively masking them to avoid penalizing the model when generating ungrounded phrases.
+                    We achieve this through a weighted token loss: positive weights are applied to <code>&lt;SPAN&gt;</code> and <code>&lt;/CN&gt;</code> tokens, while <strong>zero</strong> weights are assigned to tokens inside <code>&lt;SPAN&gt;...&lt;/UN&gt;</code> sections—effectively masking them to avoid penalizing the model when generating ungrounded phrases.
                   </p>
             </div>
         </div>
@@ -246,26 +246,29 @@
                     <h2 class="title is-4">REVERSE's Inference Paradigm: Retrospective Resampling</h2>
                     <div class="content has-text-justified">
                         <p style="margin-left: 1rem;">
-                            <!-- <b>Retrospective Resampling</b> -->
-                            During inference, the model performs standard next-token prediction while continuously monitoring the likelihood of <code>&lt;/UN&gt;</code>. If this likelihood exceeds a threshold, REVERSE triggers a self-correction loop—resampling the output to correct potential hallucinations. It’s like doing a little DFS-style backtracking, just like we learned in algorithm class!
+                            During inference, REVERSE performs next-token prediction while monitoring the probability of <code>&lt;/UN&gt;</code>. Instead of passively waiting for a hallucination to fully appear, we proactively intervene when the probability exceeds a set confidence threshold (τ). This enables the model to identify and correct hallucinations before they are fully formed.
                         </p>
                         <ul>
-                            <li>
-                                <strong>Backtracking Strategies:</strong> Roll back to the latest <code>&lt;/CN&gt;</code> tag, or further if needed, once <code>&lt;/UN&gt;</code> exceeds a threshold.
+                            <li><strong>Backtracking Strategy:</strong>
+                                <ol>
+                                    <li>First, backtrack to the most recent <code>&lt;/CN&gt;</code> token.</li>
+                                    <li>(After <em>K</em> local correction attempts) If hallucination persists, the model assumes the issue originates earlier and backtracks to the nearest prior punctuation.</li>
+                                    <li>(After <em>N</em> total attempts) If hallucination still persists, the model returns the output with a flag indicating unresolved hallucination.</li>
+                                </ol>
                             </li>
-                            <li>
-                                <strong>Correction Strategies:</strong> The model uses two techniques for self-correction:
+                            <li><strong>Self-Correction Strategies:</strong> 
                                 <ul>
-                                    <li>
-                                        <strong>Rejection Sampling:</strong> We refine uncertain phrases by resampling multiple times at an increased temperature, seeking an alternative lower than the threshold.</li>
-                                    </li>
-                                    <li>
-                                        <strong>Query Rewriting:</strong> We augment the user query with hints pointing out the potential hallucination to discourage repetition. This improves the model's ability to recognize the hint, providing stronger sginals for the model to do self-correction.
-                                        <!-- query sys prompt  -->
+                                    <li><strong>Rejection Sampling:</strong> The model resamples multiple completions at a higher temperature (T+ΔT), searching for an alternative phrase that falls below the hallucination threshold.</li>
+                                    <li><strong>Query Rewriting:</strong> In addition to rejection sampling, REVERSE augments the prompt with hints to improve grounding. Specifically, the prompt is rewritten to include phrases like: <i>Hint: potential incorrect phrases</i>.
+                                        <br>
+                                        This instructs the model to revisit uncertain segments to provide a more reliable response. During training, Some of the queries are randomly injected with hint-based rewrites to help the model recognize and respond to them.
                                     </li>
                                 </ul>
                             </li>
                         </ul>
+                        <p style="margin-left: 1rem; margin-top: 1rem;">
+                            For open-ended tasks, REVERSE uses a different prompting strategy that explicitly asks the model to detect false premises or identify missing information. This enables the model to better handle ambiguous or underspecified queries without defaulting to generic answers. Modified prompt: <i>"For this question, please point out the false premises or note what information is missing, rather than answering it directly."</i>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -285,19 +288,44 @@
                         <p> Examples from AMBER benchmark evaluation for comparison. Hallucinated objects from other VLMs are highlighted in red. </p>
                         <div class="item is-vcentered">
                             <img src="static/images/qualitative_examples_2.png" alt="" />
+                        </div><br>
+                        <!-- <h2 class="title is-4">Results</h2> -->
+                        <div class="columns is-centered has-text-centered">
+                            <div class="column is-full">
+                                <h2 class="title is-4">Results</h2>
+                            </div>
                         </div>
-                        <h2 class="title is-4">Results</h2>
+                        <p>
+                            Our evaluations show that REVERSE achieves state-of-the-art hallucination reduction, outperforming the best existing methods by up to 12% on CHAIR-MSCOCO and 28% on HaloQuest.
+                        </p>
                         <b> Image Captioning Tasks</b>
+                        <p>
+                            Performance comparison across different models on MSCOCO and AMBER(g) benchmark.
+                        </p>
                         <div class="item is-vcentered">
-                            <img src="static/images/results.png" alt="" />
+                            <img src="static/images/image_captioning_results.png" alt="" />
                         </div>
+                        <br>
                         <b> Open-ended Question Answering </b>
-                        <div class="item is-vcentered">
-                            <img src="static/images/results.png" alt="" />
+                        <p>
+                            Performance comparison across different models on mmHal (Left), HaloQuest benchmark (Right).
+                        </p>
+                        <div class="columns is-centered is-vcentered">
+                            <div class="column is-half">
+                                <img src="static/images/mmhal_results.png" alt="HaloQuest Results" />
+                            </div>
+                            <div class="column is-half">
+                                <img src="static/images/haloquest_results.png" alt="MMHal Results" />
+                            </div>
                         </div>
+                        <br>
+
                         <b> Discriminative Questions </b>
+                        <p>
+                            Performance comparison across different models on AMBER(d), POPE, MME-Hall.
+                        </p>
                         <div class="item is-vcentered">
-                            <img src="static/images/results.png" alt="" />
+                            <img src="static/images/discriminative_results.png" alt="discriminative_results" style="width: 66%; height: auto;" />
                         </div>
                     </div>
                 </div>

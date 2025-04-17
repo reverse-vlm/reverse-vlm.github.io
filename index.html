@@ -141,14 +141,11 @@
                     <h2 class="title is-4">VLMs suffer from Hallucinations </h2>
                     <div class="content has-text-justified">
                         <p>
-                            Vision-Language Models (VLMs) have made huge strides on tasks like image captioning or visual question answering. However, they still suffer from hallucinations, where they generate descriptions on nonexistent objects or concepts.
+                            Vision-Language Models (VLMs) have made huge strides on tasks like image captioning or visual question answering. However, they <b>still suffer from hallucinations</b>, where they generate descriptions on nonexistent objects or concepts.
                         </p>
                     </div>
                     <div class="content has-text-justified">
                         <p><strong>Previous approaches generally fall into two paradigms:</strong></p>
-                        <!-- <div class="item is-vcentered">
-                            <img src="static/images/intro_2.png" alt="How it works" />
-                        </div>  -->
                         <ul>
                             <li>
                                 <strong>Generation Adjustment</strong>: This method aims to improve the alignment of textual outputs with visual inputs by modifying the 
@@ -156,7 +153,7 @@
                                 or through a <em>training-based</em> approach (introducing additional supervision signals or custom objective functions).
                             </li>
                             <li>
-                                <strong>Post-hoc Verification</strong>: This method introduces large external models (e.g., GPT-4) to 
+                                <strong>Post-hoc Verification</strong>: This method introduces large external models (e.g.,GPT-4) to 
                                 <em>evaluate and verify outputs</em> after generation.
                             </li>
                         </ul>
@@ -224,14 +221,14 @@
                     <li>
                       <b>Hallucination-Aware Training Objectives</b>: 
                       <ul>
-                        <li>Standard next-token prediction: Retains conventional instruction tuning behavior for answer generation.</li>
-                        <li>Avoiding hallucination modeling: Minimizes the likelihood of producing tokens labeled as hallucinated in the dataset.</li>
-                        <li>Confidence tagging: Teaches the model when to emit <code>&lt;SPAN&gt;</code>, and whether to end with <code>&lt;/CN&gt;</code> or <code>&lt;/UN&gt;</code> as a signal of groundedness.</li>
+                        <li><strong>Standard next-token prediction:</strong> Retains conventional instruction tuning behavior for answer generation.</li>
+                        <li><strong>Avoiding hallucination modeling:</strong> Minimizes the likelihood of producing tokens labeled as hallucinated in the dataset.</li>
+                        <li><strong>Confidence tagging:</strong> Teaches the model when to emit <code>&lt;SPAN&gt;</code>, and whether to end with <code>&lt;/CN&gt;</code> or <code>&lt;/UN&gt;</code> as a signal of groundedness.</li>
                       </ul>
                     </li>
                   </ul>
                   <p style="margin-left: 2rem;">
-                    We achieve this through a weighted token loss: positive weights are applied to <code>&lt;SPAN&gt;</code> and <code>&lt;/CN&gt;</code> tokens, while <strong>zero</strong> weights are assigned to tokens inside <code>&lt;SPAN&gt;...&lt;/UN&gt;</code> sections—effectively masking them to avoid penalizing the model when generating ungrounded phrases.
+                    We achieve this through a <b>weighted token loss</b>: <b>positive weights</b> are applied to <code>&lt;SPAN&gt;</code> and <code>&lt;/CN&gt;</code> tokens, while <strong>zero weights</strong> are assigned to tokens inside <code>&lt;SPAN&gt;...&lt;/UN&gt;</code> sections—effectively masking them to avoid penalizing the model when generating ungrounded phrases.
                   </p>
             </div>
         </div>
@@ -251,9 +248,9 @@
                         <ul>
                             <li><strong>Backtracking Strategy:</strong>
                                 <ol>
-                                    <li>First, backtrack to the most recent <code>&lt;/CN&gt;</code> token.</li>
-                                    <li>(After <em>K</em> local correction attempts) If hallucination persists, the model assumes the issue originates earlier and backtracks to the nearest prior punctuation.</li>
-                                    <li>(After <em>N</em> total attempts) If hallucination still persists, the model returns the output with a flag indicating unresolved hallucination.</li>
+                                    <li>First, backtrack to the <b>most recent</b> <code>&lt;/CN&gt;</code> token.</li>
+                                    <li><b>(After <em>K</em> local correction attempts):</b> The model assumes the issue originates earlier and backtracks to the nearest prior punctuation.</li>
+                                    <li><b>(After <em>N</em> total attempts):</b> The model returns the output with a flag indicating that hallucination is unresolved.</li>
                                 </ol>
                             </li>
                             <li><strong>Self-Correction Strategies:</strong> 
@@ -267,7 +264,7 @@
                             </li>
                         </ul>
                         <p style="margin-left: 1rem; margin-top: 1rem;">
-                            For open-ended tasks, REVERSE uses a different prompting strategy that explicitly asks the model to detect false premises or identify missing information. This enables the model to better handle ambiguous or underspecified queries without defaulting to generic answers. Modified prompt: <i>"For this question, please point out the false premises or note what information is missing, rather than answering it directly."</i>
+                            <strong>Open-ended tasks:</strong> In these tasks, models often encounter false premises or lack sufficient context. To address this, we adopt a prompting strategy that encourages the model to <b>identify missing information or invalid assumptions, rather than attempting to answer directly</b>. (Modified prompt): <i>"For this question, please point out the false premises or note what information is missing, rather than answering it directly."</i>
                         </p>
                     </div>
                 </div>
@@ -283,24 +280,23 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered has-text-centered">
                 <div class="column is-full">
-                    <h2 class="title is-4">Examples</h2>
+                    <h2 class="title is-4">Examples: Real Evaluation Result Examples</h2>
                     <div class="content has-text-justified">
                         <p> Examples from AMBER benchmark evaluation for comparison. Hallucinated objects from other VLMs are highlighted in red. </p>
                         <div class="item is-vcentered">
                             <img src="static/images/qualitative_examples_2.png" alt="" />
                         </div><br>
-                        <!-- <h2 class="title is-4">Results</h2> -->
                         <div class="columns is-centered has-text-centered">
                             <div class="column is-full">
-                                <h2 class="title is-4">Results</h2>
+                                <h2 class="title is-4">Results: Performance Comparison Across Different Tasks</h2>
                             </div>
                         </div>
                         <p>
-                            Our evaluations show that REVERSE achieves state-of-the-art hallucination reduction, outperforming the best existing methods by up to 12% on CHAIR-MSCOCO and 28% on HaloQuest.
+                            Our evaluations show that <b>REVERSE</b> achieves state-of-the-art hallucination reduction, <b>outperforming the best existing methods</b> by up to 12% on CHAIR-MSCOCO and 28% on HaloQuest.
                         </p>
                         <b> Image Captioning Tasks</b>
                         <p>
-                            Performance comparison across different models on MSCOCO and AMBER(g) benchmark.
+                            Performance comparison across different models on <b>CHAIR-MSCOCO</b> and <b>AMBER(g)</b> benchmark.
                         </p>
                         <div class="item is-vcentered">
                             <img src="static/images/image_captioning_results.png" alt="" />
@@ -308,7 +304,7 @@
                         <br>
                         <b> Open-ended Question Answering </b>
                         <p>
-                            Performance comparison across different models on mmHal (Left), HaloQuest benchmark (Right).
+                            Performance comparison across different models on <b>mmHal</b> (Left), <b>HaloQuest</b> (Right) benchmark .
                         </p>
                         <div class="columns is-centered is-vcentered">
                             <div class="column is-half">
@@ -322,7 +318,7 @@
 
                         <b> Discriminative Questions </b>
                         <p>
-                            Performance comparison across different models on AMBER(d), POPE, MME-Hall.
+                            Performance comparison across different models on <b>AMBER(d)</b>, <b>POPE</b>, <b>MME-Hall</b>.
                         </p>
                         <div class="item is-vcentered">
                             <img src="static/images/discriminative_results.png" alt="discriminative_results" style="width: 66%; height: auto;" />

@@ -1,4 +1,4 @@
-# Visual Haystacks: Answering Harder Questions About Sets of Images
+# REVERSE
 
 This is an academic paper project page template.
 

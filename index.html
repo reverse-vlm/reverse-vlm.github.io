@@ -7,16 +7,16 @@
     <!-- Replace the content tag with appropriate information -->
     <meta name="description" content="Generate, but Verify: Reducing Hallucination in Vision-Language Models with Retrospective Resampling">
     <meta property="og:title" content="REVERSE" />
-    <meta property="og:description" content="Vision-Language Models (VLMs) excel at visual understanding but often suffer from visual hallucinations, where they generate descriptions of nonexistent objects, actions, or concepts, posing significant risks in safety-critical applications. Existing hallucination mitigation methods typically follow one of two paradigms: generation adjustment, which modifies decoding behavior to align text with visual inputs, and post-hoc verification, where external models assess and correct outputs While effective, generation adjustment methods often rely on heuristics and lack correction mechanisms, while post-hoc verification is complicated typically requiring multiple models and tending to reject outputs rather than refine them. In this work, we introduce REVERSE, a unified framework that integrates hallucination-aware training with on-the-fly self verification. By leveraging a new hallucination-verification dataset containing over 1.3M semi-synthetic samples, along with a novel inference-time retrospective resampling technique, our approach enables VLMs to both detect hallucinations during generation and dynamically revise those hallucinations. Our evaluations show that REVERSE achieves state-of-the-art hallucination reduction, outperforming the best existing methods by up to 20% on CHAIR-MSCOCO and 50% on Halo Quest." />
+    <meta property="og:description" content="Vision-Language Models (VLMs) excel at visual understanding but often suffer from visual hallucinations, where they generate descriptions of nonexistent objects, actions, or concepts, posing significant risks in safety-critical applications. Existing hallucination mitigation methods typically follow one of two paradigms: generation adjustment, which modifies decoding behavior to align text with visual inputs, and post-hoc verification, where external models assess and correct outputs. While effective, generation adjustment methods often rely on heuristics and lack correction mechanisms, while post-hoc verification is complicated, typically requiring multiple models and tending to reject outputs rather than refine them. In this work, we introduce REVERSE, a unified framework that integrates hallucination-aware training with on-the-fly self-verification. By leveraging a new hallucination-verification dataset containing over 1.3M semi-synthetic samples, along with a novel inference-time retrospective resampling technique, our approach enables VLMs to both detect hallucinations during generation and dynamically revise those hallucinations. Our evaluations show that REVERSE achieves state-of-the-art hallucination reduction, outperforming the best existing methods by up to 12% on CHAIR-MSCOCO and 28% on HaloQuest. Our dataset, model, and code are available at: https://reverse-vlm.github.io." />
     <meta property="og:url" content="http://reverse-vlm.github.io" />
     <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X630-->
-    <meta property="og:image" content="/static/images/REVERSE_logo.png" />
+    <meta property="og:image" content="static/images/REVERSE_logo.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
 
     <meta name="twitter:title" content="Generate, but Verify: Reducing Hallucination in Vision-Language Models with Retrospective Resampling">
-    <meta name="twitter:description" content="Vision-Language Models (VLMs) excel at visual understanding but often suffer from visual hallucinations, where they generate descriptions of nonexistent objects, actions, or concepts, posing significant risks in safety-critical applications. Existing hallucination mitigation methods typically follow one of two paradigms: generation adjustment, which modifies decoding behavior to align text with visual inputs, and post-hoc verification, where external models assess and correct outputs While effective, generation adjustment methods often rely on heuristics and lack correction mechanisms, while post-hoc verification is complicated typically requiring multiple models and tending to reject outputs rather than refine them. In this work, we introduce REVERSE, a unified framework that integrates hallucination-aware training with on-the-fly self verification. By leveraging a new hallucination-verification dataset containing over 1.3M semi-synthetic samples, along with a novel inference-time retrospective resampling technique, our approach enables VLMs to both detect hallucinations during generation and dynamically revise those hallucinations. Our evaluations show that REVERSE achieves state-of-the-art hallucination reduction, outperforming the best existing methods by up to 20% on CHAIR-MSCOCO and 50% on Halo Quest." />
+    <meta name="twitter:description" content="Vision-Language Models (VLMs) excel at visual understanding but often suffer from visual hallucinations, where they generate descriptions of nonexistent objects, actions, or concepts, posing significant risks in safety-critical applications. Existing hallucination mitigation methods typically follow one of two paradigms: generation adjustment, which modifies decoding behavior to align text with visual inputs, and post-hoc verification, where external models assess and correct outputs. While effective, generation adjustment methods often rely on heuristics and lack correction mechanisms, while post-hoc verification is complicated, typically requiring multiple models and tending to reject outputs rather than refine them. In this work, we introduce REVERSE, a unified framework that integrates hallucination-aware training with on-the-fly self-verification. By leveraging a new hallucination-verification dataset containing over 1.3M semi-synthetic samples, along with a novel inference-time retrospective resampling technique, our approach enables VLMs to both detect hallucinations during generation and dynamically revise those hallucinations. Our evaluations show that REVERSE achieves state-of-the-art hallucination reduction, outperforming the best existing methods by up to 12% on CHAIR-MSCOCO and 28% on HaloQuest. Our dataset, model, and code are available at: https://reverse-vlm.github.io." />
     <!-- Path to banner image, should be in the path listed below. Optimal dimensions are 1200X600-->
     <meta name="twitter:image" content="static/images/REVERSE_logo.png">
     <meta name="twitter:card" content="REVERSE Project Logo: A cartoon llava character holding a tool that fixes hallucination.">
@@ -84,7 +84,7 @@
                                 <div class="publication-links">
 
                                     <span class="link-block">
-                                        <a href="static/pdfs/reverse_release_paper.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                                        <a href="https://arxiv.org/abs/2504.13169" target="_blank" class="external-link button is-normal is-rounded is-dark">
                                             <span class="icon">
                                                 <i class="ai ai-arxiv"></i>
                                             </span>
@@ -323,12 +323,11 @@
     <section class="section" id="BibTeX">
         <div class="container is-max-desktop content">
             <h2 class="title">BibTeX</h2>
-            <pre><code>@article{wu2024visual,
+            <pre><code>@article{wu2025reverse,
   title={Generate, but Verify: Reducing Hallucination in Vision-Language Models with Retrospective Resampling},
   author={Wu, Tsung-Han and Lee, Heekyung and Ge, Jiaxin and Gonzalez, Joseph E and Darrell, Trevor and Chan, David M},
-  journal={arXiv},
-  year={2025},
-  url={TODO}
+  journal={arXiv preprint arXiv:2504.13169},
+  year={2025}
 }</code></pre>
         </div>
     </section>
